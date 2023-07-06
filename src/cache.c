@@ -658,7 +658,7 @@ void prepare_measurement() {
     // busy loop for ~2s to get the cpu to max frequency on machines where it
     // cannot be fixed.
     uint64_t i = 0;
-    while(i++ < 2 * PROCESSOR_FREQ);
+    //while(i++ < 2 * PROCESSOR_FREQ);
 
     // Sample timestamp a few times because we sometimes observed slower values
     // on the first calls

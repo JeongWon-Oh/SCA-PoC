@@ -21,38 +21,36 @@
  * Contact: miro.haller@alumni.ethz.ch
  *
  * Short description of this file:
- * This file contains all device specific parameters. They should be adapted
- * to the execution environment for best performance. Especially the cache level
- * sizes are crucial for the attack to work.
+ * This file defines a collection of miscellaneous utilities. Some are useful
+ * for library internal functions, some can be convenient for for external
+ * users as well.
  */
 
-#ifndef HEADER_DEVICE_CONF_H
-#define HEADER_DEVICE_CONF_H
+#ifndef HEADER_UTIL_H
+#define HEADER_UTIL_H
 
-// General settings
-#define PAGE_SIZE 4096
-#define PROCESSOR_FREQ 2900000000
+#ifndef _GNU_SOURCE
+    #define _GNU_SOURCE
+#endif
 
-// Cache related settings
-#define CACHELINE_SIZE 64
-#define CACHE_GROUP_SIZE (PAGE_SIZE / CACHELINE_SIZE)
+#include <assert.h>
+#include <sched.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <time.h>
 
-// Addressing:
-// - virtual:   0
-// - physical:  1
-#define L1_ADDRESSING 0
-#define L1_SETS 64
-#define L1_ASSOCIATIVITY 8
-#define L1_ACCESS_TIME 1
+void pin_to_cpu(int cpu);
 
-#define L2_ADDRESSING 0
-#define L2_SETS 512
-#define L2_ASSOCIATIVITY 16
-#define L2_ACCESS_TIME 14
+void set_seed(void);
+void gen_rand_bytes(unsigned char *arr, uint32_t arr_len);
+void random_perm(uint32_t *arr, uint32_t arr_len);
+void gen_random_indices(uint32_t *arr, uint32_t arr_len);
 
-#define L3_ADDRESSING 0
-#define L3_SETS 1024
-#define L3_ASSOCIATIVITY 8
-#define L3_ACCESS_TIME 44
+bool is_in_arr(uint32_t elem, uint32_t *arr, uint32_t arr_len);
 
-#endif // HEADER_DEVICE_CONF_H
+double get_avg(uint32_t *arr, uint32_t arr_len);
+uint32_t get_max(uint32_t *arr, uint32_t arr_len);
+uint32_t get_min(uint32_t *arr, uint32_t arr_len);
+
+#endif // HEADER_UTIL_H

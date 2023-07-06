@@ -21,38 +21,15 @@
  * Contact: miro.haller@alumni.ethz.ch
  *
  * Short description of this file:
- * This file contains all device specific parameters. They should be adapted
- * to the execution environment for best performance. Especially the cache level
- * sizes are crucial for the attack to work.
+ * Header file to include to use all functions of the CacheSC library
  */
 
-#ifndef HEADER_DEVICE_CONF_H
-#define HEADER_DEVICE_CONF_H
+#ifndef HEADER_CACHESC_H
+#define HEADER_CACHESC_H
 
-// General settings
-#define PAGE_SIZE 4096
-#define PROCESSOR_FREQ 2900000000
+#include "cache.h"
+#include "io.h"
+#include "util.h"
+#include "victim.h"
 
-// Cache related settings
-#define CACHELINE_SIZE 64
-#define CACHE_GROUP_SIZE (PAGE_SIZE / CACHELINE_SIZE)
-
-// Addressing:
-// - virtual:   0
-// - physical:  1
-#define L1_ADDRESSING 0
-#define L1_SETS 64
-#define L1_ASSOCIATIVITY 8
-#define L1_ACCESS_TIME 1
-
-#define L2_ADDRESSING 0
-#define L2_SETS 512
-#define L2_ASSOCIATIVITY 16
-#define L2_ACCESS_TIME 14
-
-#define L3_ADDRESSING 0
-#define L3_SETS 1024
-#define L3_ASSOCIATIVITY 8
-#define L3_ACCESS_TIME 44
-
-#endif // HEADER_DEVICE_CONF_H
+#endif // HEADER_CACHESC_H
