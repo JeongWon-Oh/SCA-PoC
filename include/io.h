@@ -77,7 +77,9 @@ static void print_results(uint32_t *res, uint32_t sample_cnt,
         PRINT_LINE("Sample number %d:\n", i);
 
         for (uint32_t j = 0; j < sets_per_sample; ++j) {
-            printf("%3d ", res[i * sets_per_sample + j]);
+            printf("[%d]%3d ", j, res[i * sets_per_sample + j]);
+            if(j%10==9)
+                printf("\n");
         }
         putchar('\n');
     }

@@ -1,0 +1,580 @@
+
+single-eviction.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <print_banner>:
+
+/*
+ * Prints a message in a banner.
+ * The `msg` should be <= 60 characters long and without line breaks.
+ */
+static void print_banner(const char *msg) {
+   0:	55                   	push   %rbp
+   1:	53                   	push   %rbx
+   2:	48 83 ec 08          	sub    $0x8,%rsp
+   6:	48 89 fd             	mov    %rdi,%rbp
+    int msg_len     = strlen(msg);
+   9:	48 c7 c1 ff ff ff ff 	mov    $0xffffffffffffffff,%rcx
+  10:	b8 00 00 00 00       	mov    $0x0,%eax
+  15:	f2 ae                	repnz scas %es:(%rdi),%al
+  17:	48 f7 d1             	not    %rcx
+  1a:	48 8d 59 ff          	lea    -0x1(%rcx),%rbx
+}
+
+__fortify_function int
+printf (const char *__restrict __fmt, ...)
+{
+  return __printf_chk (__USE_FORTIFY_LEVEL - 1, __fmt, __va_arg_pack ());
+  1e:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 25 <print_banner+0x25>
+  25:	e8 00 00 00 00       	callq  2a <print_banner+0x2a>
+    int left_pad    = (BANNER_LEN - msg_len + 1) / 2;
+    int right_pad   = (BANNER_LEN - msg_len) / 2;
+  2a:	41 b8 3c 00 00 00    	mov    $0x3c,%r8d
+  30:	41 29 d8             	sub    %ebx,%r8d
+  33:	44 89 c0             	mov    %r8d,%eax
+  36:	c1 e8 1f             	shr    $0x1f,%eax
+  39:	41 01 c0             	add    %eax,%r8d
+    int left_pad    = (BANNER_LEN - msg_len + 1) / 2;
+  3c:	ba 3d 00 00 00       	mov    $0x3d,%edx
+  41:	89 d0                	mov    %edx,%eax
+  43:	29 d8                	sub    %ebx,%eax
+  45:	89 c2                	mov    %eax,%edx
+  47:	c1 ea 1f             	shr    $0x1f,%edx
+  4a:	01 c2                	add    %eax,%edx
+  4c:	d1 fa                	sar    %edx
+
+    printf(BANNER);
+    printf("# %*s%*s #\n", left_pad + msg_len, msg, right_pad, "");
+  4e:	01 da                	add    %ebx,%edx
+  50:	4c 8d 0d 00 00 00 00 	lea    0x0(%rip),%r9        # 57 <print_banner+0x57>
+  57:	41 d1 f8             	sar    %r8d
+  5a:	48 89 e9             	mov    %rbp,%rcx
+  5d:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 64 <print_banner+0x64>
+  64:	bf 01 00 00 00       	mov    $0x1,%edi
+  69:	b8 00 00 00 00       	mov    $0x0,%eax
+  6e:	e8 00 00 00 00       	callq  73 <print_banner+0x73>
+  73:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 7a <print_banner+0x7a>
+  7a:	e8 00 00 00 00       	callq  7f <print_banner+0x7f>
+    PRINT_FLUSH(BANNER);
+  7f:	48 8b 3d 00 00 00 00 	mov    0x0(%rip),%rdi        # 86 <print_banner+0x86>
+  86:	e8 00 00 00 00       	callq  8b <print_banner+0x8b>
+}
+  8b:	48 83 c4 08          	add    $0x8,%rsp
+  8f:	5b                   	pop    %rbx
+  90:	5d                   	pop    %rbp
+  91:	c3                   	retq   
+
+0000000000000092 <usage>:
+    printf("flag5\n");
+
+    return EXIT_SUCCESS;
+}
+
+void usage(const char *prog) {
+  92:	f3 0f 1e fa          	endbr64 
+  96:	50                   	push   %rax
+  97:	58                   	pop    %rax
+  98:	48 83 ec 08          	sub    $0x8,%rsp
+  9c:	48 89 f9             	mov    %rdi,%rcx
+  return __fprintf_chk (__stream, __USE_FORTIFY_LEVEL - 1, __fmt,
+  9f:	48 8d 15 00 00 00 00 	lea    0x0(%rip),%rdx        # a6 <usage+0x14>
+  a6:	be 01 00 00 00       	mov    $0x1,%esi
+  ab:	48 8b 3d 00 00 00 00 	mov    0x0(%rip),%rdi        # b2 <usage+0x20>
+  b2:	b8 00 00 00 00       	mov    $0x0,%eax
+  b7:	e8 00 00 00 00       	callq  bc <usage+0x2a>
+    fprintf(stderr, "Usage: %s <samples>\n", prog);
+    exit(EXIT_FAILURE);
+  bc:	bf 01 00 00 00       	mov    $0x1,%edi
+  c1:	e8 00 00 00 00       	callq  c6 <main>
+
+00000000000000c6 <main>:
+int main(int argc, char **argv) {
+  c6:	f3 0f 1e fa          	endbr64 
+  ca:	41 57                	push   %r15
+  cc:	41 56                	push   %r14
+  ce:	41 55                	push   %r13
+  d0:	41 54                	push   %r12
+  d2:	55                   	push   %rbp
+  d3:	53                   	push   %rbx
+  d4:	48 83 ec 28          	sub    $0x28,%rsp
+    if (argc == 2)
+  d8:	83 ff 02             	cmp    $0x2,%edi
+  db:	74 08                	je     e5 <main+0x1f>
+        usage(argv[0]);
+  dd:	48 8b 3e             	mov    (%rsi),%rdi
+  e0:	e8 00 00 00 00       	callq  e5 <main+0x1f>
+
+#ifdef __USE_EXTERN_INLINES
+__extern_inline int
+__NTH (atoi (const char *__nptr))
+{
+  return (int) strtol (__nptr, (char **) NULL, 10);
+  e5:	48 8b 7e 08          	mov    0x8(%rsi),%rdi
+  e9:	ba 0a 00 00 00       	mov    $0xa,%edx
+  ee:	be 00 00 00 00       	mov    $0x0,%esi
+  f3:	e8 00 00 00 00       	callq  f8 <main+0x32>
+  f8:	48 89 c3             	mov    %rax,%rbx
+        sample_cnt = atoi(argv[1]);
+  fb:	89 44 24 14          	mov    %eax,0x14(%rsp)
+  return __printf_chk (__USE_FORTIFY_LEVEL - 1, __fmt, __va_arg_pack ());
+  ff:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 106 <main+0x40>
+ 106:	e8 00 00 00 00       	callq  10b <main+0x45>
+    PRINT_LINE("Initial attacker preparation\n");
+ 10b:	48 8b 3d 00 00 00 00 	mov    0x0(%rip),%rdi        # 112 <main+0x4c>
+ 112:	e8 00 00 00 00       	callq  117 <main+0x51>
+ 117:	89 da                	mov    %ebx,%edx
+ 119:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 120 <main+0x5a>
+ 120:	bf 01 00 00 00       	mov    $0x1,%edi
+ 125:	b8 00 00 00 00       	mov    $0x0,%eax
+ 12a:	e8 00 00 00 00       	callq  12f <main+0x69>
+    PRINT_LINE("Number of samples: %d\n", sample_cnt);
+ 12f:	48 8b 3d 00 00 00 00 	mov    0x0(%rip),%rdi        # 136 <main+0x70>
+ 136:	e8 00 00 00 00       	callq  13b <main+0x75>
+ 13b:	ba 40 00 00 00       	mov    $0x40,%edx
+ 140:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 147 <main+0x81>
+ 147:	bf 01 00 00 00       	mov    $0x1,%edi
+ 14c:	b8 00 00 00 00       	mov    $0x0,%eax
+ 151:	e8 00 00 00 00       	callq  156 <main+0x90>
+    PRINT_LINE("Measurements per sample: %d\n", MSRMTS_PER_SAMPLE);
+ 156:	48 8b 3d 00 00 00 00 	mov    0x0(%rip),%rdi        # 15d <main+0x97>
+ 15d:	e8 00 00 00 00       	callq  162 <main+0x9c>
+/*
+ * Initialises the context for the given cache level.
+ * Returns null for unsupported or unknown cache level.
+ */
+static cache_ctx *get_cache_ctx(cache_level cache_level) {
+    cache_ctx *ctx = (cache_ctx *) malloc(sizeof(cache_ctx));
+ 162:	bf 20 00 00 00       	mov    $0x20,%edi
+ 167:	e8 00 00 00 00       	callq  16c <main+0xa6>
+ 16c:	49 89 c6             	mov    %rax,%r14
+    assert(ctx);
+ 16f:	48 85 c0             	test   %rax,%rax
+ 172:	0f 84 27 01 00 00    	je     29f <main+0x1d9>
+
+    if (cache_level == L1) {
+        ctx->addressing     = L1_ADDRESSING;
+ 178:	c7 40 04 00 00 00 00 	movl   $0x0,0x4(%rax)
+        ctx->sets           = L1_SETS;
+ 17f:	c7 40 08 40 00 00 00 	movl   $0x40,0x8(%rax)
+        ctx->associativity  = L1_ASSOCIATIVITY;
+ 186:	c7 40 0c 08 00 00 00 	movl   $0x8,0xc(%rax)
+        ctx->access_time    = L1_ACCESS_TIME;
+ 18d:	c7 40 10 01 00 00 00 	movl   $0x1,0x10(%rax)
+    }
+    else {
+        return NULL;
+    }
+
+    ctx->cache_level        = cache_level;
+ 194:	c7 00 00 00 00 00    	movl   $0x0,(%rax)
+    ctx->nr_of_cachelines   = ctx->sets * ctx->associativity;
+ 19a:	c7 40 14 00 02 00 00 	movl   $0x200,0x14(%rax)
+    ctx->set_size           = CACHELINE_SIZE * ctx->associativity;
+ 1a1:	c7 40 18 00 02 00 00 	movl   $0x200,0x18(%rax)
+    ctx->cache_size         = ctx->sets * ctx->set_size;
+ 1a8:	c7 40 1c 00 80 00 00 	movl   $0x8000,0x1c(%rax)
+    cacheline *cache_ds = prepare_cache_ds(ctx);
+ 1af:	48 89 c7             	mov    %rax,%rdi
+ 1b2:	e8 00 00 00 00       	callq  1b7 <main+0xf1>
+ 1b7:	48 89 04 24          	mov    %rax,(%rsp)
+ 1bb:	41 8b 4e 08          	mov    0x8(%r14),%ecx
+ 1bf:	48 83 ec 08          	sub    $0x8,%rsp
+ 1c3:	41 8b 46 1c          	mov    0x1c(%r14),%eax
+ 1c7:	50                   	push   %rax
+ 1c8:	41 8b 46 18          	mov    0x18(%r14),%eax
+ 1cc:	50                   	push   %rax
+ 1cd:	41 8b 46 14          	mov    0x14(%r14),%eax
+ 1d1:	50                   	push   %rax
+ 1d2:	45 8b 4e 10          	mov    0x10(%r14),%r9d
+ 1d6:	45 8b 46 0c          	mov    0xc(%r14),%r8d
+ 1da:	41 8b 16             	mov    (%r14),%edx
+ 1dd:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 1e4 <main+0x11e>
+ 1e4:	bf 01 00 00 00       	mov    $0x1,%edi
+ 1e9:	b8 00 00 00 00       	mov    $0x0,%eax
+ 1ee:	e8 00 00 00 00       	callq  1f3 <main+0x12d>
+    size_t res_size = sample_cnt * MSRMTS_PER_SAMPLE * sizeof(time_type);
+ 1f3:	89 dd                	mov    %ebx,%ebp
+ 1f5:	c1 e5 06             	shl    $0x6,%ebp
+ 1f8:	89 ed                	mov    %ebp,%ebp
+ 1fa:	48 c1 e5 02          	shl    $0x2,%rbp
+    time_type *res  = (time_type *) malloc(res_size);
+ 1fe:	48 83 c4 20          	add    $0x20,%rsp
+ 202:	48 89 ef             	mov    %rbp,%rdi
+ 205:	e8 00 00 00 00       	callq  20a <main+0x144>
+ 20a:	49 89 c4             	mov    %rax,%r12
+    assert(res);
+ 20d:	48 85 c0             	test   %rax,%rax
+ 210:	0f 84 a8 00 00 00    	je     2be <main+0x1f8>
+    {
+      __warn_memset_zero_len ();
+      return __dest;
+    }
+#endif
+  return __builtin___memset_chk (__dest, __ch, __len, __bos0 (__dest));
+ 216:	48 89 ea             	mov    %rbp,%rdx
+ 219:	be 00 00 00 00       	mov    $0x0,%esi
+ 21e:	48 89 c7             	mov    %rax,%rdi
+ 221:	e8 00 00 00 00       	callq  226 <main+0x160>
+    cacheline *victim_ptr = prepare_victim(ctx, TARGET_SET);
+ 226:	be 0d 00 00 00       	mov    $0xd,%esi
+ 22b:	4c 89 f7             	mov    %r14,%rdi
+ 22e:	e8 00 00 00 00       	callq  233 <main+0x16d>
+ 233:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+ 238:	ba 0d 00 00 00       	mov    $0xd,%edx
+ 23d:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 244 <main+0x17e>
+ 244:	bf 01 00 00 00       	mov    $0x1,%edi
+ 249:	b8 00 00 00 00       	mov    $0x0,%eax
+ 24e:	e8 00 00 00 00       	callq  253 <main+0x18d>
+    PRINT_LINE("Legend: target set: %d\n", TARGET_SET);
+ 253:	48 8b 3d 00 00 00 00 	mov    0x0(%rip),%rdi        # 25a <main+0x194>
+ 25a:	e8 00 00 00 00       	callq  25f <main+0x199>
+    prepare_measurement();
+ 25f:	e8 00 00 00 00       	callq  264 <main+0x19e>
+    print_banner("Start cache attack(s)");
+ 264:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 26b <main+0x1a5>
+ 26b:	e8 90 fd ff ff       	callq  0 <print_banner>
+    prepare_measurement();
+ 270:	e8 00 00 00 00       	callq  275 <main+0x1af>
+    for (i = 0; i < sample_cnt; ++i) {
+ 275:	85 db                	test   %ebx,%ebx
+ 277:	0f 84 36 03 00 00    	je     5b3 <main+0x4ed>
+ 27d:	44 8d 7b ff          	lea    -0x1(%rbx),%r15d
+ 281:	49 83 c7 01          	add    $0x1,%r15
+ 285:	49 c1 e7 08          	shl    $0x8,%r15
+ 289:	4d 01 e7             	add    %r12,%r15
+    cacheline *curr_head    = cache_ds;
+ 28c:	4c 8b 2c 24          	mov    (%rsp),%r13
+    uint32_t *curr_res      = res;
+ 290:	4c 89 e5             	mov    %r12,%rbp
+ 293:	4c 89 64 24 18       	mov    %r12,0x18(%rsp)
+ 298:	4c 8b 64 24 08       	mov    0x8(%rsp),%r12
+ 29d:	eb 79                	jmp    318 <main+0x252>
+    assert(ctx);
+ 29f:	48 8d 0d 00 00 00 00 	lea    0x0(%rip),%rcx        # 2a6 <main+0x1e0>
+ 2a6:	ba 6b 00 00 00       	mov    $0x6b,%edx
+ 2ab:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 2b2 <main+0x1ec>
+ 2b2:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 2b9 <main+0x1f3>
+ 2b9:	e8 00 00 00 00       	callq  2be <main+0x1f8>
+    assert(res);
+ 2be:	48 8d 0d 00 00 00 00 	lea    0x0(%rip),%rcx        # 2c5 <main+0x1ff>
+ 2c5:	ba 60 00 00 00       	mov    $0x60,%edx
+ 2ca:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 2d1 <main+0x20b>
+ 2d1:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 2d8 <main+0x212>
+ 2d8:	e8 00 00 00 00       	callq  2dd <main+0x217>
+    do {
+        if (IS_FIRST(curr_cl->flags)) {
+            res[curr_cl->cache_set] = curr_cl->time_msrmt;
+        }
+
+        curr_cl = curr_cl->prev;
+ 2dd:	48 8b 40 08          	mov    0x8(%rax),%rax
+    } while (curr_cl != head);
+ 2e1:	4c 39 d8             	cmp    %r11,%rax
+ 2e4:	74 13                	je     2f9 <main+0x233>
+        if (IS_FIRST(curr_cl->flags)) {
+ 2e6:	f6 40 12 01          	testb  $0x1,0x12(%rax)
+ 2ea:	74 f1                	je     2dd <main+0x217>
+            res[curr_cl->cache_set] = curr_cl->time_msrmt;
+ 2ec:	0f b7 50 10          	movzwl 0x10(%rax),%edx
+ 2f0:	8b 48 14             	mov    0x14(%rax),%ecx
+ 2f3:	89 4c 95 00          	mov    %ecx,0x0(%rbp,%rdx,4)
+ 2f7:	eb e4                	jmp    2dd <main+0x217>
+        curr_res += MSRMTS_PER_SAMPLE;
+ 2f9:	48 81 c5 00 01 00 00 	add    $0x100,%rbp
+        m5_work_end(0, 0);
+ 300:	be 00 00 00 00       	mov    $0x0,%esi
+ 305:	bf 00 00 00 00       	mov    $0x0,%edi
+ 30a:	e8 00 00 00 00       	callq  30f <main+0x249>
+    for (i = 0; i < sample_cnt; ++i) {
+ 30f:	4c 39 fd             	cmp    %r15,%rbp
+ 312:	0f 84 cc 00 00 00    	je     3e4 <main+0x31e>
+        m5_dump_reset_stats(0, 0);
+ 318:	be 00 00 00 00       	mov    $0x0,%esi
+ 31d:	bf 00 00 00 00       	mov    $0x0,%edi
+ 322:	e8 00 00 00 00       	callq  327 <main+0x261>
+        m5_work_begin(0, 0);
+ 327:	be 00 00 00 00       	mov    $0x0,%esi
+ 32c:	bf 00 00 00 00       	mov    $0x0,%edi
+ 331:	e8 00 00 00 00       	callq  336 <main+0x270>
+        ::
+    );
+}
+
+static inline void cpuid() {
+    asm volatile(
+ 336:	b8 05 00 00 80       	mov    $0x80000005,%eax
+ 33b:	0f a2                	cpuid  
+        "mov $0x80000005, %%eax\n\t"
+        "cpuid\n\t"
+        ::: CPUID_AFFECTED_REGS
+    );
+}
+ 33d:	4c 89 ee             	mov    %r13,%rsi
+        curr_cl = curr_cl->next;
+ 340:	48 8b 36             	mov    (%rsi),%rsi
+    asm volatile(
+ 343:	0f ae f0             	mfence 
+    } while(curr_cl != head);
+ 346:	49 39 f5             	cmp    %rsi,%r13
+ 349:	75 f5                	jne    340 <main+0x27a>
+    asm volatile(
+ 34b:	b8 05 00 00 80       	mov    $0x80000005,%eax
+ 350:	0f a2                	cpuid  
+        curr_cl = curr_cl->next;
+ 352:	48 8b 36             	mov    (%rsi),%rsi
+    asm volatile(
+ 355:	0f ae f0             	mfence 
+    } while(curr_cl != head);
+ 358:	49 39 f5             	cmp    %rsi,%r13
+ 35b:	75 f5                	jne    352 <main+0x28c>
+    asm volatile(
+ 35d:	b8 05 00 00 80       	mov    $0x80000005,%eax
+ 362:	0f a2                	cpuid  
+    return curr_cl->prev;
+ 364:	4c 8b 5e 08          	mov    0x8(%rsi),%r11
+    asm volatile(
+ 368:	0f ae f0             	mfence 
+        :: "r" (p)
+    );
+}
+
+static inline void readq(void *p) {
+    asm volatile (
+ 36b:	4d 8b 14 24          	mov    (%r12),%r10
+    cacheline *curr_cs = head;
+ 36f:	4c 89 de             	mov    %r11,%rsi
+    return tsc_low;
+}
+
+// Ivy Bridge has a 14-19 stage pipeline
+static inline void nop_slide() {
+    asm volatile (
+ 372:	90                   	nop
+ 373:	90                   	nop
+ 374:	90                   	nop
+ 375:	90                   	nop
+ 376:	90                   	nop
+ 377:	90                   	nop
+ 378:	90                   	nop
+ 379:	90                   	nop
+ 37a:	90                   	nop
+ 37b:	90                   	nop
+ 37c:	90                   	nop
+ 37d:	90                   	nop
+ 37e:	90                   	nop
+ 37f:	90                   	nop
+ 380:	90                   	nop
+ 381:	90                   	nop
+ 382:	90                   	nop
+ 383:	90                   	nop
+ 384:	90                   	nop
+ 385:	90                   	nop
+ 386:	90                   	nop
+ 387:	90                   	nop
+ 388:	90                   	nop
+ 389:	90                   	nop
+ 38a:	90                   	nop
+ 38b:	90                   	nop
+ 38c:	90                   	nop
+ 38d:	90                   	nop
+ 38e:	90                   	nop
+ 38f:	90                   	nop
+ 390:	90                   	nop
+ 391:	90                   	nop
+ 392:	90                   	nop
+ 393:	90                   	nop
+ 394:	90                   	nop
+ 395:	90                   	nop
+ 396:	90                   	nop
+ 397:	90                   	nop
+    asm volatile(
+ 398:	0f a2                	cpuid  
+ 39a:	0f 31                	rdtsc  
+ 39c:	41 89 c0             	mov    %eax,%r8d
+// Traverse cache sets in reverse order for minimal cache impact
+static inline cacheline *asm_l1_probe_cacheset(cacheline *curr_cl) {
+    cacheline *next_cl;
+
+    start_timer();
+    asm volatile(
+ 39f:	48 8b 46 08          	mov    0x8(%rsi),%rax
+ 3a3:	48 8b 48 08          	mov    0x8(%rax),%rcx
+ 3a7:	48 8b 41 08          	mov    0x8(%rcx),%rax
+ 3ab:	48 8b 48 08          	mov    0x8(%rax),%rcx
+ 3af:	48 8b 41 08          	mov    0x8(%rcx),%rax
+ 3b3:	48 8b 48 08          	mov    0x8(%rax),%rcx
+ 3b7:	4c 8b 51 08          	mov    0x8(%rcx),%r10
+ 3bb:	49 8b 7a 08          	mov    0x8(%r10),%rdi
+ 3bf:	48 89 fe             	mov    %rdi,%rsi
+    asm volatile(
+ 3c2:	0f 01 f9             	rdtscp 
+ 3c5:	41 89 c1             	mov    %eax,%r9d
+ 3c8:	0f a2                	cpuid  
+ 3ca:	45 29 c1             	sub    %r8d,%r9d
+ 3cd:	45 89 cd             	mov    %r9d,%r13d
+ 3d0:	45 89 6a 14          	mov    %r13d,0x14(%r10)
+    } while(__builtin_expect(curr_cs != head, 1));
+ 3d4:	4c 39 df             	cmp    %r11,%rdi
+ 3d7:	75 99                	jne    372 <main+0x2ac>
+    return curr_cs->next;
+ 3d9:	4d 8b 2b             	mov    (%r11),%r13
+    cacheline *curr_cl  = head;
+ 3dc:	4c 89 d8             	mov    %r11,%rax
+ 3df:	e9 02 ff ff ff       	jmpq   2e6 <main+0x220>
+ 3e4:	4c 8b 64 24 18       	mov    0x18(%rsp),%r12
+    print_banner("Stop cache attack(s)");
+ 3e9:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 3f0 <main+0x32a>
+ 3f0:	e8 0b fc ff ff       	callq  0 <print_banner>
+ 3f5:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 3fc <main+0x336>
+ 3fc:	e8 00 00 00 00       	callq  401 <main+0x33b>
+ 401:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 408 <main+0x342>
+ 408:	e8 00 00 00 00       	callq  40d <main+0x347>
+ 40d:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 414 <main+0x34e>
+ 414:	e8 00 00 00 00       	callq  419 <main+0x353>
+    PRINT_LINE("Output cache attack data\n");
+ 419:	48 8b 3d 00 00 00 00 	mov    0x0(%rip),%rdi        # 420 <main+0x35a>
+ 420:	e8 00 00 00 00       	callq  425 <main+0x35f>
+ 425:	41 bf 00 00 00 00    	mov    $0x0,%r15d
+   for (uint32_t i = 0; i < sample_cnt; ++i) {
+        PRINT_LINE("Sample number %d:\n", i);
+
+        for (uint32_t j = 0; j < sets_per_sample; ++j) {
+            printf("[%d]%3d ", j, res[i * sets_per_sample + j]);
+            if(j%10==9)
+ 42b:	41 bd cd cc cc cc    	mov    $0xcccccccd,%r13d
+ 431:	4c 89 74 24 18       	mov    %r14,0x18(%rsp)
+ 436:	44 8b 74 24 14       	mov    0x14(%rsp),%r14d
+ 43b:	eb 1e                	jmp    45b <main+0x395>
+
+/* Write a character to stdout.  */
+__STDIO_INLINE int
+putchar (int __c)
+{
+  return putc (__c, stdout);
+ 43d:	48 8b 35 00 00 00 00 	mov    0x0(%rip),%rsi        # 444 <main+0x37e>
+ 444:	bf 0a 00 00 00       	mov    $0xa,%edi
+ 449:	e8 00 00 00 00       	callq  44e <main+0x388>
+   for (uint32_t i = 0; i < sample_cnt; ++i) {
+ 44e:	41 83 c7 01          	add    $0x1,%r15d
+ 452:	45 39 fe             	cmp    %r15d,%r14d
+ 455:	0f 84 9c 00 00 00    	je     4f7 <main+0x431>
+ 45b:	44 89 fa             	mov    %r15d,%edx
+ 45e:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 465 <main+0x39f>
+ 465:	bf 01 00 00 00       	mov    $0x1,%edi
+ 46a:	b8 00 00 00 00       	mov    $0x0,%eax
+ 46f:	e8 00 00 00 00       	callq  474 <main+0x3ae>
+        PRINT_LINE("Sample number %d:\n", i);
+ 474:	48 8b 3d 00 00 00 00 	mov    0x0(%rip),%rdi        # 47b <main+0x3b5>
+ 47b:	e8 00 00 00 00       	callq  480 <main+0x3ba>
+            printf("[%d]%3d ", j, res[i * sets_per_sample + j]);
+ 480:	44 89 fd             	mov    %r15d,%ebp
+ 483:	c1 e5 06             	shl    $0x6,%ebp
+ 486:	89 e8                	mov    %ebp,%eax
+ 488:	41 8b 0c 84          	mov    (%r12,%rax,4),%ecx
+ 48c:	ba 00 00 00 00       	mov    $0x0,%edx
+ 491:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 498 <main+0x3d2>
+ 498:	bf 01 00 00 00       	mov    $0x1,%edi
+ 49d:	b8 00 00 00 00       	mov    $0x0,%eax
+ 4a2:	e8 00 00 00 00       	callq  4a7 <main+0x3e1>
+        for (uint32_t j = 0; j < sets_per_sample; ++j) {
+ 4a7:	bb 00 00 00 00       	mov    $0x0,%ebx
+ 4ac:	83 c3 01             	add    $0x1,%ebx
+ 4af:	83 fb 40             	cmp    $0x40,%ebx
+ 4b2:	74 89                	je     43d <main+0x377>
+            printf("[%d]%3d ", j, res[i * sets_per_sample + j]);
+ 4b4:	8d 04 2b             	lea    (%rbx,%rbp,1),%eax
+ 4b7:	41 8b 0c 84          	mov    (%r12,%rax,4),%ecx
+ 4bb:	89 da                	mov    %ebx,%edx
+ 4bd:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 4c4 <main+0x3fe>
+ 4c4:	bf 01 00 00 00       	mov    $0x1,%edi
+ 4c9:	b8 00 00 00 00       	mov    $0x0,%eax
+ 4ce:	e8 00 00 00 00       	callq  4d3 <main+0x40d>
+            if(j%10==9)
+ 4d3:	89 d8                	mov    %ebx,%eax
+ 4d5:	49 0f af c5          	imul   %r13,%rax
+ 4d9:	48 c1 e8 23          	shr    $0x23,%rax
+ 4dd:	8d 04 80             	lea    (%rax,%rax,4),%eax
+ 4e0:	01 c0                	add    %eax,%eax
+ 4e2:	89 da                	mov    %ebx,%edx
+ 4e4:	29 c2                	sub    %eax,%edx
+ 4e6:	83 fa 09             	cmp    $0x9,%edx
+ 4e9:	75 c1                	jne    4ac <main+0x3e6>
+ 4eb:	bf 0a 00 00 00       	mov    $0xa,%edi
+ 4f0:	e8 00 00 00 00       	callq  4f5 <main+0x42f>
+ 4f5:	eb b5                	jmp    4ac <main+0x3e6>
+ 4f7:	4c 8b 74 24 18       	mov    0x18(%rsp),%r14
+                printf("\n");
+        }
+        putchar('\n');
+    }
+    fflush(stdout);
+ 4fc:	48 8b 3d 00 00 00 00 	mov    0x0(%rip),%rdi        # 503 <main+0x43d>
+ 503:	e8 00 00 00 00       	callq  508 <main+0x442>
+ 508:	48 8b 1c 24          	mov    (%rsp),%rbx
+ 50c:	44 8b 4b 14          	mov    0x14(%rbx),%r9d
+
+/*
+ * Fancy print the P+P cache line
+ */
+static void print_cacheline(cacheline *cl) {
+    printf("cacheline = {\n\tnext: %p,\n\tprev: %p,\n\tcache set: %d,\n\t"
+ 510:	44 0f b7 43 10       	movzwl 0x10(%rbx),%r8d
+ 515:	48 8b 4b 08          	mov    0x8(%rbx),%rcx
+ 519:	48 83 ec 08          	sub    $0x8,%rsp
+ 51d:	0f b7 43 12          	movzwl 0x12(%rbx),%eax
+ 521:	50                   	push   %rax
+ 522:	48 8b 13             	mov    (%rbx),%rdx
+ 525:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 52c <main+0x466>
+ 52c:	bf 01 00 00 00       	mov    $0x1,%edi
+ 531:	b8 00 00 00 00       	mov    $0x0,%eax
+ 536:	e8 00 00 00 00       	callq  53b <main+0x475>
+ 53b:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 542 <main+0x47c>
+ 542:	e8 00 00 00 00       	callq  547 <main+0x481>
+    free(res);
+ 547:	4c 89 e7             	mov    %r12,%rdi
+ 54a:	e8 00 00 00 00       	callq  54f <main+0x489>
+ 54f:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 556 <main+0x490>
+ 556:	e8 00 00 00 00       	callq  55b <main+0x495>
+    release_cache_ds(ctx, cache_ds);
+ 55b:	48 89 de             	mov    %rbx,%rsi
+ 55e:	4c 89 f7             	mov    %r14,%rdi
+ 561:	e8 00 00 00 00       	callq  566 <main+0x4a0>
+ 566:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 56d <main+0x4a7>
+ 56d:	e8 00 00 00 00       	callq  572 <main+0x4ac>
+    release_victim(ctx, victim_ptr);
+ 572:	48 8b 74 24 18       	mov    0x18(%rsp),%rsi
+ 577:	4c 89 f7             	mov    %r14,%rdi
+ 57a:	e8 00 00 00 00       	callq  57f <main+0x4b9>
+ 57f:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 586 <main+0x4c0>
+ 586:	e8 00 00 00 00       	callq  58b <main+0x4c5>
+    free(ctx);
+ 58b:	4c 89 f7             	mov    %r14,%rdi
+ 58e:	e8 00 00 00 00       	callq  593 <main+0x4cd>
+ 593:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 59a <main+0x4d4>
+ 59a:	e8 00 00 00 00       	callq  59f <main+0x4d9>
+}
+ 59f:	b8 00 00 00 00       	mov    $0x0,%eax
+ 5a4:	48 83 c4 38          	add    $0x38,%rsp
+ 5a8:	5b                   	pop    %rbx
+ 5a9:	5d                   	pop    %rbp
+ 5aa:	41 5c                	pop    %r12
+ 5ac:	41 5d                	pop    %r13
+ 5ae:	41 5e                	pop    %r14
+ 5b0:	41 5f                	pop    %r15
+ 5b2:	c3                   	retq   
+    print_banner("Stop cache attack(s)");
+ 5b3:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 5ba <main+0x4f4>
+ 5ba:	e8 41 fa ff ff       	callq  0 <print_banner>
+ 5bf:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 5c6 <main+0x500>
+ 5c6:	e8 00 00 00 00       	callq  5cb <main+0x505>
+ 5cb:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 5d2 <main+0x50c>
+ 5d2:	e8 00 00 00 00       	callq  5d7 <main+0x511>
+ 5d7:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 5de <main+0x518>
+ 5de:	e8 00 00 00 00       	callq  5e3 <main+0x51d>
+    PRINT_LINE("Output cache attack data\n");
+ 5e3:	48 8b 3d 00 00 00 00 	mov    0x0(%rip),%rdi        # 5ea <main+0x524>
+ 5ea:	e8 00 00 00 00       	callq  5ef <main+0x529>
+   for (uint32_t i = 0; i < sample_cnt; ++i) {
+ 5ef:	e9 08 ff ff ff       	jmpq   4fc <main+0x436>

@@ -28,16 +28,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cachesc.h>
-
+#include "gem5/m5ops.h"
 
 /*
  * Configure side-channel attack
  */
 
+//#define GEM5
+
 // Pin process to a CPU. To reduce noise, this CPU can be isolated.
 #define CPU_NUMBER 1
 // Set which is targeted for the eviction that this demo measures
-#define TARGET_SET 33
+#define TARGET_SET 13
 
 // This demo can be run on L1 or L2, uncomment the respective macros below
 
@@ -47,9 +49,9 @@
 #define PRIME prime
 
 // Uncomment for L2 attack
-// #define TARGET_CACHE L2
-// #define MSRMTS_PER_SAMPLE L2_SETS
-// #define PRIME prime_rev
+//#define TARGET_CACHE L2
+//#define MSRMTS_PER_SAMPLE L2_SETS
+//#define PRIME prime_rev
 
 // local functions
 void usage(const char *prog);
@@ -69,13 +71,26 @@ int main(int argc, char **argv) {
     PRINT_LINE("Initial attacker preparation\n");
     PRINT_LINE("Number of samples: %d\n", sample_cnt);
     PRINT_LINE("Measurements per sample: %d\n", MSRMTS_PER_SAMPLE);
-
+    //printf("cacheline pointer size: %ld\n", sizeof(cacheline*));
     // Get a cache context object containing the dimensions of the attacked
     // cache.
     cache_ctx *ctx = get_cache_ctx(TARGET_CACHE);
     // Prepare the Prime+Probe data structure. For unprivileged L2 attacks,
     // this can take a while.
     cacheline *cache_ds = prepare_cache_ds(ctx);
+    
+    print_cache_ctx(ctx);
+    
+    //int iii = 0; int jjj = 0; int prevcset = 64;
+    //for(cacheline *curr = cache_ds->next; iii<4; curr = curr->next) {
+    //    //printf("iter:%d | %d\n", jjj++, iii);
+    //    print_cacheline(curr);
+    //    if(curr->cache_set != prevcset) {
+    //        
+    //        iii++;
+    //    }
+    //    prevcset = curr->cache_set;
+    //}
 
     // Prepare an array to store the time measurements
     size_t res_size = sample_cnt * MSRMTS_PER_SAMPLE * sizeof(time_type);
@@ -86,10 +101,18 @@ int main(int argc, char **argv) {
     // Prepare victim, which we later use to access a cache line in the
     // targeted set.
     cacheline *victim_ptr = prepare_victim(ctx, TARGET_SET);
+    print_cacheline(cache_ds);
+    print_cacheline(victim_ptr);
+    //printf("-----\n");
+    //printf("hello flsdkajflksdaj\nflkajdlfdsjkl\n");
+    //printf("one more line\n");
+    //print_cache_ds(cache_ds);
+    //printf("-----\n");
+    //print_cache_ds(victim_ptr);
     PRINT_LINE("Legend: target set: %d\n", TARGET_SET);
 
     // Pin process to a CPU
-    pin_to_cpu(CPU_NUMBER);
+    //pin_to_cpu(CPU_NUMBER);
 
     uint32_t i;
     uint32_t *curr_res      = res;
@@ -98,28 +121,27 @@ int main(int argc, char **argv) {
 
     prepare_measurement();
 
-
     /*
      * Make baseline measurements for normalisation (optional)
      */
-    #ifdef NORMALIZE
-    for (i = 0; i < sample_cnt; ++i) {
-        curr_head = PRIME(curr_head);
-        next_head = probe(TARGET_CACHE, curr_head);
-
-        get_msrmts_for_all_set(curr_head, curr_res);
-        curr_head = next_head;
-        curr_res += MSRMTS_PER_SAMPLE;
-    }
-
-    PRINT_LINE("Output cache set access baseline data\n");
-    print_results(res, sample_cnt, MSRMTS_PER_SAMPLE);
-
-    // reset changes
-    memset(res, 0, res_size);
-    curr_res    = res;
-    curr_head   = cache_ds;
-    #endif
+    //#ifdef NORMALIZE
+    //for (i = 0; i < sample_cnt; ++i) {
+    //    curr_head = PRIME(curr_head);
+    //    next_head = probe(TARGET_CACHE, curr_head);
+    //
+    //    get_msrmts_for_all_set(curr_head, curr_res);
+    //    curr_head = next_head;
+    //    curr_res += MSRMTS_PER_SAMPLE;
+    //}
+    //
+    //PRINT_LINE("Output cache set access baseline data\n");
+    //print_results(res, sample_cnt, MSRMTS_PER_SAMPLE);
+    //
+    //// reset changes
+    //memset(res, 0, res_size);
+    //curr_res    = res;
+    //curr_head   = cache_ds;
+    //#endif
 
 
     /*
@@ -129,19 +151,35 @@ int main(int argc, char **argv) {
 
     prepare_measurement();
 
+    
     for (i = 0; i < sample_cnt; ++i) {
+        //m5_dump_reset_stats(0, 0);
+        
         curr_head = PRIME(curr_head);
+        
+        
         // Access cache line in target cache set
         victim(victim_ptr);
+        #ifdef GEM5
+        m5_work_begin(0, 0);
+        #endif
         next_head = probe(TARGET_CACHE, curr_head);
-
+        #ifdef GEM5
+            m5_work_end(0, 0);
+        #endif        
         get_msrmts_for_all_set(curr_head, curr_res);
         curr_head = next_head;
         curr_res += MSRMTS_PER_SAMPLE;
+        
     }
+    
 
     print_banner("Stop cache attack(s)");
 
+    //printf("-----\n");
+    //print_cache_ds(cache_ds);
+    //printf("-----\n");
+    //print_cache_ds(victim_ptr);
 
     /*
      * Print output
@@ -149,14 +187,21 @@ int main(int argc, char **argv) {
     PRINT_LINE("Output cache attack data\n");
     print_results(res, sample_cnt, MSRMTS_PER_SAMPLE);
 
+    //print_cache_ds(cache_ds);
+    //print_cacheline(cache_ds);
 
     /*
      * Cleanup
      */
+    printf("flag1\n");
     free(res);
+    printf("flag2\n");
     release_cache_ds(ctx, cache_ds);
+    printf("flag3\n");
     release_victim(ctx, victim_ptr);
+    printf("flag4\n");
     release_cache_ctx(ctx);
+    printf("flag5\n");
 
     return EXIT_SUCCESS;
 }

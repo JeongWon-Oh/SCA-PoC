@@ -511,7 +511,9 @@ void release_cache_ds(cache_ctx *ctx, cacheline *cache_ds) {
     bool add_ptr;
 
     if (ctx->addressing == VIRTUAL) {
+        printf("release_cache_ds!!\n");
         free(remove_cache_set(ctx, cache_ds));
+        //free(cache_ds);
     }
     else {
         curr_cl             = cache_ds;
@@ -552,6 +554,7 @@ void release_cache_ds(cache_ctx *ctx, cacheline *cache_ds) {
 
 void release_cache_set_ds(cache_ctx *ctx, cacheline *cache_set_ds) {
     if (ctx->addressing == VIRTUAL) {
+        printf("releases_cache_set_ds\n");
         free(remove_cache_set(ctx, cache_set_ds));
     }
     else {

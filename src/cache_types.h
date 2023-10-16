@@ -31,6 +31,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "device_conf.h"
 
@@ -137,6 +138,7 @@ static void release_cache_ctx(cache_ctx *ctx) {
  * Removes bits that define the cache set from a pointer
  */
 static void *remove_cache_set(cache_ctx *ctx, void *ptr) {
+    printf("remove_cache_set\n");
     return (void *) (((uintptr_t) ptr) & ~SET_MASK(ctx->sets));
 }
 
@@ -292,6 +294,14 @@ static void print_cache_ctx(cache_ctx *ctx) {
            ctx->cache_level, ctx->sets, ctx->associativity, ctx->access_time,
            ctx->nr_of_cachelines, ctx->set_size, ctx->cache_size
     );
+}
+
+static void print_cache_ds(cacheline *cds) {
+    cacheline *cur = cds;
+    do {
+        print_cacheline(cur);
+        cur = cur->next;
+    } while (cur != cds);
 }
 
 #endif // HEADER_CACHE_CONF_H

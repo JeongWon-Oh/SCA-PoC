@@ -1,0 +1,186 @@
+==25462== Memcheck, a memory error detector
+==25462== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==25462== Using Valgrind-3.15.0-608cb11914-20190413 and LibVEX; rerun with -h for copyright info
+==25462== Command: ./single-eviction 1
+==25462== Parent PID: 25303
+==25462== 
+--25462-- 
+--25462-- Valgrind options:
+--25462--    --leak-check=full
+--25462--    --log-file=memcheck.txt
+--25462--    -v
+--25462--    --error-limit=no
+--25462-- Contents of /proc/version:
+--25462--   Linux version 5.10.0-20-amd64 (debian-kernel@lists.debian.org) (gcc-10 (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2) #1 SMP Debian 5.10.158-2 (2022-12-13)
+--25462-- 
+--25462-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand
+--25462-- Page sizes: currently 4096, max supported 4096
+--25462-- Valgrind library directory: /usr/lib/x86_64-linux-gnu/valgrind
+--25462-- Reading syms from /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction
+--25462-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-2.31.so
+--25462--   Considering /usr/lib/debug/.build-id/45/87364908de169dec62ffa538170118c1c3a078.debug ..
+--25462--   .. build-id is valid
+--25462-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/memcheck-amd64-linux
+--25462--    object doesn't have a symbol table
+--25462--    object doesn't have a dynamic symbol table
+--25462-- Scheduler: using generic scheduler lock implementation.
+--25462-- Reading suppressions file: /usr/lib/x86_64-linux-gnu/valgrind/default.supp
+==25462== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-25462-by-???-on-8ab115b2d249
+==25462== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-25462-by-???-on-8ab115b2d249
+==25462== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-25462-by-???-on-8ab115b2d249
+==25462== 
+==25462== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==25462== don't want to do, unless you know exactly what you're doing,
+==25462== or are doing some strange experiment):
+==25462==   /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=25462 ...command...
+==25462== 
+==25462== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==25462==   /path/to/gdb ./single-eviction
+==25462== and then give GDB the following command
+==25462==   target remote | /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=25462
+==25462== --pid is optional if only one valgrind process is running
+==25462== 
+--25462-- REDIR: 0x4022e20 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c9ce2 (???)
+--25462-- REDIR: 0x4022bf0 (ld-linux-x86-64.so.2:index) redirected to 0x580c9cfc (???)
+--25462-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_core-amd64-linux.so
+--25462--    object doesn't have a symbol table
+--25462-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so
+--25462--    object doesn't have a symbol table
+==25462== WARNING: new redirection conflicts with existing -- ignoring it
+--25462--     old: 0x04022e20 (strlen              ) R-> (0000.0) 0x580c9ce2 ???
+--25462--     new: 0x04022e20 (strlen              ) R-> (2007.0) 0x0483f060 strlen
+--25462-- REDIR: 0x401f600 (ld-linux-x86-64.so.2:strcmp) redirected to 0x483ffd0 (strcmp)
+--25462-- REDIR: 0x4023380 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4843a20 (mempcpy)
+--25462-- Reading syms from /usr/lib/x86_64-linux-gnu/libc-2.31.so
+--25462--   Considering /usr/lib/debug/.build-id/18/78e6b475720c7c51969e69ab2d276fae6d1dee.debug ..
+--25462--   .. build-id is valid
+--25462-- REDIR: 0x48f4480 (libc.so.6:memmove) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f3780 (libc.so.6:strncpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f47b0 (libc.so.6:strcasecmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f30a0 (libc.so.6:strcat) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f37e0 (libc.so.6:rindex) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f5c50 (libc.so.6:rawmemchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x4910ce0 (libc.so.6:wmemchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x4910820 (libc.so.6:wcscmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f45e0 (libc.so.6:mempcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f4410 (libc.so.6:bcmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f3710 (libc.so.6:strncmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f3150 (libc.so.6:strcmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f4540 (libc.so.6:memset) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x49107e0 (libc.so.6:wcschr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f3670 (libc.so.6:strnlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f3230 (libc.so.6:strcspn) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f4800 (libc.so.6:strncasecmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f31d0 (libc.so.6:strcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f4950 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x4911f50 (libc.so.6:wcsnlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x4910860 (libc.so.6:wcscpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f3820 (libc.so.6:strpbrk) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f3100 (libc.so.6:index) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f3630 (libc.so.6:strlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48fcbb0 (libc.so.6:memrchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f4850 (libc.so.6:strcasecmp_l) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f43d0 (libc.so.6:memchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x4910930 (libc.so.6:wcslen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f3ae0 (libc.so.6:strspn) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f4750 (libc.so.6:stpncpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f46f0 (libc.so.6:stpcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f5c90 (libc.so.6:strchrnul) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x48f48a0 (libc.so.6:strncasecmp_l) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--25462-- REDIR: 0x49dc500 (libc.so.6:__strrchr_avx2) redirected to 0x483ea10 (rindex)
+--25462-- REDIR: 0x49dc6d0 (libc.so.6:__strlen_avx2) redirected to 0x483ef40 (strlen)
+--25462-- REDIR: 0x48ee0e0 (libc.so.6:malloc) redirected to 0x483b780 (malloc)
+--25462-- REDIR: 0x49dc310 (libc.so.6:__strchrnul_avx2) redirected to 0x4843540 (strchrnul)
+--25462-- REDIR: 0x49df6c0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4843660 (mempcpy)
+--25462-- REDIR: 0x48ef250 (libc.so.6:memalign) redirected to 0x483e2a0 (memalign)
+--25462-- REDIR: 0x48efb10 (libc.so.6:calloc) redirected to 0x483dce0 (calloc)
+--25462-- REDIR: 0x48ee6d0 (libc.so.6:free) redirected to 0x483c9d0 (free)
+--25462-- REDIR: 0x49dfb60 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x48428e0 (memset)
+==25462== Conditional jump or move depends on uninitialised value(s)
+==25462==    at 0x10AA1D: prepare_cache_set_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x10ADBE: prepare_victim (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x1096AF: main (single-eviction.c:101)
+==25462== 
+==25462== Conditional jump or move depends on uninitialised value(s)
+==25462==    at 0x10AA2A: prepare_cache_set_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x10ADBE: prepare_victim (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x1096AF: main (single-eviction.c:101)
+==25462== 
+==25462== Conditional jump or move depends on uninitialised value(s)
+==25462==    at 0x10977B: get_msrmts_for_all_set (cache.h:293)
+==25462==    by 0x10977B: main (single-eviction.c:152)
+==25462== 
+==25462== Invalid free() / delete / delete[] / realloc()
+==25462==    at 0x483CA3F: free (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25462==    by 0x10A4BE: release_cache_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x109961: main (single-eviction.c:173)
+==25462==  Address 0x4a4a000 is 2,848 bytes inside a block of size 4,096 free'd
+==25462==    at 0x483CA3F: free (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25462==    by 0x10A89C: prepare_cache_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x109633: main (single-eviction.c:78)
+==25462==  Block was alloc'd at
+==25462==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25462==    by 0x10A317: allocate_cache_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x10A874: prepare_cache_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x109633: main (single-eviction.c:78)
+==25462== 
+==25462== 
+==25462== HEAP SUMMARY:
+==25462==     in use at exit: 32,768 bytes in 1 blocks
+==25462==   total heap usage: 274 allocs, 274 frees, 92,712 bytes allocated
+==25462== 
+==25462== Searching for pointers to 1 not-freed blocks
+==25462== Checked 68,344 bytes
+==25462== 
+==25462== 32,768 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==25462==    at 0x483E340: memalign (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25462==    by 0x10A363: allocate_cache_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x10A874: prepare_cache_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x109633: main (single-eviction.c:78)
+==25462== 
+==25462== LEAK SUMMARY:
+==25462==    definitely lost: 32,768 bytes in 1 blocks
+==25462==    indirectly lost: 0 bytes in 0 blocks
+==25462==      possibly lost: 0 bytes in 0 blocks
+==25462==    still reachable: 0 bytes in 0 blocks
+==25462==         suppressed: 0 bytes in 0 blocks
+==25462== 
+==25462== Use --track-origins=yes to see where uninitialised values come from
+==25462== ERROR SUMMARY: 770 errors from 5 contexts (suppressed: 0 from 0)
+==25462== 
+==25462== 1 errors in context 1 of 5:
+==25462== Invalid free() / delete / delete[] / realloc()
+==25462==    at 0x483CA3F: free (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25462==    by 0x10A4BE: release_cache_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x109961: main (single-eviction.c:173)
+==25462==  Address 0x4a4a000 is 2,848 bytes inside a block of size 4,096 free'd
+==25462==    at 0x483CA3F: free (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25462==    by 0x10A89C: prepare_cache_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x109633: main (single-eviction.c:78)
+==25462==  Block was alloc'd at
+==25462==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25462==    by 0x10A317: allocate_cache_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x10A874: prepare_cache_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x109633: main (single-eviction.c:78)
+==25462== 
+==25462== 
+==25462== 256 errors in context 2 of 5:
+==25462== Conditional jump or move depends on uninitialised value(s)
+==25462==    at 0x10977B: get_msrmts_for_all_set (cache.h:293)
+==25462==    by 0x10977B: main (single-eviction.c:152)
+==25462== 
+==25462== 
+==25462== 256 errors in context 3 of 5:
+==25462== Conditional jump or move depends on uninitialised value(s)
+==25462==    at 0x10AA2A: prepare_cache_set_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x10ADBE: prepare_victim (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x1096AF: main (single-eviction.c:101)
+==25462== 
+==25462== 
+==25462== 256 errors in context 4 of 5:
+==25462== Conditional jump or move depends on uninitialised value(s)
+==25462==    at 0x10AA1D: prepare_cache_set_ds (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x10ADBE: prepare_victim (in /home/jeongwon/SCA_PoC_gem5/SCA-PoC/demo/single-eviction)
+==25462==    by 0x1096AF: main (single-eviction.c:101)
+==25462== 
+==25462== ERROR SUMMARY: 770 errors from 5 contexts (suppressed: 0 from 0)

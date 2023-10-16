@@ -35,6 +35,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <assert.h>
+#include <stdio.h>
 
 #include "asm.h"
 #include "cache.h"

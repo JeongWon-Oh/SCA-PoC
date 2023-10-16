@@ -22,7 +22,11 @@ ifeq ($(ARGON_LIB),)
     ARGON_LIB = /usr/lib/x86_64-linux-gnu
 endif
 
-CFLAGS  += -std=gnu99 -D_ISOC11_SOURCE=1 -O1 -Winline
+CFLAGS  += -std=gnu99 -D_ISOC11_SOURCE=1 -O1 -Winline -g
+
+GEM5_PATH = /home/jeongwon/SCA_PoC_gem5/gem5-SCA
+CFLAGS += -I$(GEM5_PATH)/include
+LDFLAGS += -L$(GEM5_PATH)/util/m5/build/x86/out -lm5
 
 ## CacheSC
 CFLAGS  += -I$(INST_PATH)/include
@@ -30,14 +34,14 @@ LDFLAGS += -L$(INST_PATH)/lib
 LDLIBS  += -lcachesc
 
 ## OpenSSL
-CFLAGS  += -I$(OPENSSL_INCL)
-LDFLAGS += -L$(OPENSSL_LIB)
-LDLIBS  += -lcrypto
+#CFLAGS  += -I$(OPENSSL_INCL)
+#LDFLAGS += -L$(OPENSSL_LIB)
+#LDLIBS  += -lcrypto
 
 ## Argon2
-CFLAGS  += -I$(ARGON_INCL)
-LDFLAGS += -L$(ARGON_LIB) -static
-LDLIBS  += -largon2 -pthread
+#CFLAGS  += -I$(ARGON_INCL)
+#LDFLAGS += -L$(ARGON_LIB) -static
+#LDLIBS  += -largon2 -pthread
 
 CC	:= gcc
 OUT := single-eviction openssl-aes-cbc argon2d-attacker argon2d-victim

@@ -58,8 +58,10 @@ cacheline *prepare_victim(cache_ctx *ctx, uint32_t target_set) {
  * Release the victim, taking into account with which method it was allocated
  */
 void release_victim(cache_ctx *ctx, cacheline *victim_cl) {
+    printf("release_victim\n");
     if (ctx->addressing == VIRTUAL) {
         free(remove_cache_set(ctx, victim_cl));
+        printf("release_victim2\n");
     }
     else {
         free(remove_cache_group_set(victim_cl));
