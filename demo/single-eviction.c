@@ -39,7 +39,7 @@
 // Pin process to a CPU. To reduce noise, this CPU can be isolated.
 #define CPU_NUMBER 1
 // Set which is targeted for the eviction that this demo measures
-#define TARGET_SET 13
+#define TARGET_SET 3
 
 // This demo can be run on L1 or L2, uncomment the respective macros below
 
@@ -188,7 +188,6 @@ int main(int argc, char **argv) {
     print_results(res, sample_cnt, MSRMTS_PER_SAMPLE);
 
     //print_cache_ds(cache_ds);
-    //print_cacheline(cache_ds);
 
     /*
      * Cleanup

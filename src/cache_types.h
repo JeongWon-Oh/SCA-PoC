@@ -299,7 +299,8 @@ static void print_cache_ctx(cache_ctx *ctx) {
 static void print_cache_ds(cacheline *cds) {
     cacheline *cur = cds;
     do {
-        print_cacheline(cur);
+        if(cur->flags!=0)
+            print_cacheline(cur);
         cur = cur->next;
     } while (cur != cds);
 }

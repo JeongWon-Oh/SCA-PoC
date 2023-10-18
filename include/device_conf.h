@@ -42,7 +42,7 @@
 // - physical:  1
 #define L1_ADDRESSING 0
 #define L1_SETS 32
-#define L1_ASSOCIATIVITY 16
+#define L1_ASSOCIATIVITY 8
 #define L1_ACCESS_TIME 1
 
 #define L2_ADDRESSING 0
