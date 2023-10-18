@@ -122,11 +122,13 @@ static inline cacheline *prime(cacheline *head) {
     cacheline *curr_cl = head;
 
     cpuid();
+    nop_slide();
     do {
         curr_cl = curr_cl->next;
         mfence();
     } while(curr_cl != head);
     cpuid();
+    nop_slide();
 
     return curr_cl->prev;
 }

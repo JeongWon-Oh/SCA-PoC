@@ -37,7 +37,7 @@
 // Pin process to a CPU. To reduce noise, this CPU can be isolated.
 #define CPU_NUMBER 1
 // Set which is targeted for the eviction that this demo measures
-#define TARGET_SET 33
+#define TARGET_SET 3
 
 // This demo can be run on L1 or L2, uncomment the respective macros below
 
@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
     PRINT_LINE("Legend: target set: %d\n", TARGET_SET);
 
     // Pin process to a CPU
-    pin_to_cpu(CPU_NUMBER);
+    //pin_to_cpu(CPU_NUMBER);
 
     uint32_t i;
     uint32_t *curr_res      = res;
@@ -149,6 +149,7 @@ int main(int argc, char **argv) {
     PRINT_LINE("Output cache attack data\n");
     print_results(res, sample_cnt, MSRMTS_PER_SAMPLE);
 
+    //print_cache_ds(cache_ds);
 
     /*
      * Cleanup

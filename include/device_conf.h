@@ -41,7 +41,7 @@
 // - virtual:   0
 // - physical:  1
 #define L1_ADDRESSING 0
-#define L1_SETS 64
+#define L1_SETS 32
 #define L1_ASSOCIATIVITY 8
 #define L1_ACCESS_TIME 1
 
@@ -52,7 +52,7 @@
 
 #define L3_ADDRESSING 0
 #define L3_SETS 1024
-#define L3_ASSOCIATIVITY 8
+#define L3_ASSOCIATIVITY 16
 #define L3_ACCESS_TIME 44
 
 #endif // HEADER_DEVICE_CONF_H

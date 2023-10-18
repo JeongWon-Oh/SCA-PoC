@@ -30,14 +30,14 @@ LDFLAGS += -L$(INST_PATH)/lib
 LDLIBS  += -lcachesc
 
 ## OpenSSL
-CFLAGS  += -I$(OPENSSL_INCL)
-LDFLAGS += -L$(OPENSSL_LIB)
-LDLIBS  += -lcrypto
+#CFLAGS  += -I$(OPENSSL_INCL)
+#LDFLAGS += -L$(OPENSSL_LIB)
+#LDLIBS  += -lcrypto
 
 ## Argon2
-CFLAGS  += -I$(ARGON_INCL)
-LDFLAGS += -L$(ARGON_LIB) -static
-LDLIBS  += -largon2 -pthread
+#CFLAGS  += -I$(ARGON_INCL)
+#LDFLAGS += -L$(ARGON_LIB) -static
+#LDLIBS  += -largon2 -pthread
 
 CC	:= gcc
 OUT := single-eviction openssl-aes-cbc argon2d-attacker argon2d-victim

@@ -116,7 +116,7 @@ static inline void rdtsc() {
 static inline void start_timer() {
     nop_slide();
     asm volatile(
-        "cpuid\n\t"
+        "sfence\n\t"
         "rdtsc\n\t"
         "mov %%eax, %%r8d\n\t"
         ::: CPUID_AFFECTED_REGS, TRANSFER_REG
@@ -127,7 +127,7 @@ static inline void stop_timer(uint32_t *tsc_low) {
     asm volatile(
         "rdtscp\n\t"
         "mov %%eax, %%r9d\n\t"
-        "cpuid\n\t"
+        //"cpuid\n\t"
         "sub %%r8d, %%r9d\n\t"
         "mov %%r9d, %0\n\t"
         : "=r" (*tsc_low)

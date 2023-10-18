@@ -294,4 +294,13 @@ static void print_cache_ctx(cache_ctx *ctx) {
     );
 }
 
+static void print_cache_ds(cacheline *cds) {
+    cacheline *cur = cds;
+    do {
+        if(cur->flags!=0)
+            print_cacheline(cur);
+        cur = cur->next;
+    } while (cur != cds);
+}
+
 #endif // HEADER_CACHE_CONF_H
